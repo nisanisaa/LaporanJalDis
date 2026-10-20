@@ -52,6 +52,7 @@ arahan = st.text_input("PETUNJUK/ARAHAN YANG DIBERIKAN")
 masalah = st.text_input("MASALAH/TEMUAN")
 saran = st.text_input("SARAN/TINDAKAN")
 lain = st.text_input("LAIN-LAIN")
+tgl = st.text_input("TANGGAL LAPORAN")
 
 # File template
 template_path = "Laporan Perjalanan Dinas.docx"
@@ -88,6 +89,8 @@ if st.button("Buat Dokumen Word"):
         st.warning("⚠️ Saran/Tindakan wajib diisi!")
     elif not lain.strip():
         st.warning("⚠️ Lain-lain wajib diisi!")
+    elif not tgl.strip():
+        st.warning("⚠️ Tanggal Laporan wajib diisi!")
     elif not os.path.exists(template_path):
         st.error(f"❌ File '{template_path}' tidak ditemukan di server.")
     else:
@@ -108,6 +111,7 @@ if st.button("Buat Dokumen Word"):
                 "{{masalah}}": masalah,
                 "{{saran}}": saran,
                 "{{lain}}": lain,
+                "{{tgl}}": tgl,
             }
 
             # Replace pada paragraf biasa
