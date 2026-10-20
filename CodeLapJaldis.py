@@ -23,10 +23,11 @@ if st.button("Buat Dokumen Word"):
 
             # Ganti placeholder di paragraf
             for p in doc.paragraphs:
-                if "{{nama}}" in p.text:
-                    p.text = p.text.replace("{{nama}}", nama)
-                if "{{NIP}}" in p.text:
-                    p.text = p.text.replace("{{NIP}}", NIP)
+                for run in p.runs:
+                    if "{{nama}}" in run.text:
+                        run.text = run.text.replace("{{nama}}", nama)
+                    if "{{nip}}" in run.text:
+                        run.text = run.text.replace("{{nip}}", NIP)
 
             # Ganti placeholder di tabel
             for table in doc.tables:
@@ -34,8 +35,8 @@ if st.button("Buat Dokumen Word"):
                     for cell in row.cells:
                         if "{{nama}}" in cell.text:
                             cell.text = cell.text.replace("{{nama}}", nama)
-                        if "{{NIP}}" in cell.text:
-                            cell.text = cell.text.replace("{{NIP}}", NIP)
+                        if "{{nip}}" in cell.text:
+                            cell.text = cell.text.replace("{{nip}}", NIP)
 
             output_path = f"LaporanJalDis_{nama.replace(' ', '_')}.docx"
             doc.save(output_path)
