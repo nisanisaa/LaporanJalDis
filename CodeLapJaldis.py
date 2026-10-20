@@ -70,7 +70,7 @@ if st.button("Buat Dokumen Word"):
                     for cell in row.cells:
                         for paragraph in cell.paragraphs:
                             for run in paragraph.runs:
-                                if "{{tujuan}}" in run.text:
+                                if "{{tujuan spt}}" in run.text:
                                     run.text = run.text.replace("{{jenis}}", tujuan)
                                 if "{{nama}}" in run.text:
                                     run.text = run.text.replace("{{nama}}", nama)
