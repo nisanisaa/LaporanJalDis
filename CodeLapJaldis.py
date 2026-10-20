@@ -51,6 +51,7 @@ arahan = st.text_input("PETUNJUK/ARAHAN YANG DIBERIKAN")
 masalah = st.text_input("MASALAH/TEMUAN")
 saran = st.text_input("SARAN/TINDAKAN")
 tindakan = st.text_input("LAIN-LAIN")
+tgl = st.text_input("TANGGAL LAPORAN")
 
 # File template harus diletakkan di folder yang sama di server
 template_path = "Laporan Perjalanan Dinas.docx"
@@ -104,12 +105,12 @@ if st.button("Buat Dokumen Word"):
                                     run.text = run.text.replace("{{saran}}", saran)
                                 if "{{tindakan}}" in run.text:
                                     run.text = run.text.replace("{{tindakan}}", tindakan)
-                                if "{{tgl}}" in run.text:
-                                    run.text = run.text.replace("{{tgl}}", tgl)
                                     
             # Ganti placeholder di paragraf
             for p in doc.paragraphs:
                 for run in p.runs:
+                    if "{{tgl}}" in run.text:
+                        run.text = run.text.replace("{{tgl}}", tgl)
                     if "{{nama}}" in run.text:
                         run.text = run.text.replace("{{nama}}", nama)
                     if "{{nip}}" in run.text:
