@@ -23,7 +23,6 @@ DATABASE_PETUGAS = {
 # Form Input Pilihan Monev dan Nama Petugas (Dropdown)
 jenis_spt = list(DATABASE_MONEV.keys())
 jenis = st.selectbox("KEGIATAN MONEV:", ["-- Silakan Pilih Kegiatan Monev --"] + jenis_spt)
-
 nama_petugas = list(DATABASE_PETUGAS.keys())
 nama = st.selectbox("NAMA PETUGAS:", ["-- Silakan Pilih Nama --"] + nama_petugas)
 
@@ -32,16 +31,16 @@ tujuan = ""
 no_spt = ""
 tgl_spt = ""
 NIP = ""
-
 if jenis != "-- Silakan Pilih Kegiatan Monev --":
-    tujuan = DATABASE_MONEV[jenis]["tujuan"]
+    # Cari no, tgl, dan tujuan berdasarkan jenis monev yang dipilih
     no_spt = DATABASE_MONEV[jenis]["no_spt"]
     tgl_spt = DATABASE_MONEV[jenis]["tgl_spt"]
-
+    tujuan = DATABASE_MONEV[jenis]["tujuan"]
 if nama != "-- Silakan Pilih Nama --":
+    # Cari NIP berdasarkan nama yang dipilih
     NIP = DATABASE_PETUGAS[nama]
 
-# Tampilkan kolom NIP (Disabled/ReadOnly)
+# Tampilkan kolom NIP (Disabled/ReadOnly agar tidak bisa diubah manual)
 st.text_input("NIP (Terisi Otomatis):", NIP, disabled=True)
 
 # Form Input Web
@@ -54,23 +53,10 @@ saran = st.text_input("SARAN/TINDAKAN")
 lain = st.text_input("LAIN-LAIN")
 tgl = st.text_input("TANGGAL LAPORAN")
 
-# File template
+# File template harus diletakkan di folder yang sama di server
 template_path = "Laporan Perjalanan Dinas.docx"
 
-# Fungsi pembantu untuk mengganti teks secara konsisten di paragraf
-def replace_text_in_paragraph(paragraph, replacements):
-    for key, val in replacements.items():
-        if key in paragraph.text:
-            # Coba ganti langsung per run jika tidak terpisah
-            for run in paragraph.runs:
-                if key in run.text:
-                    run.text = run.text.replace(key, val)
-            # Jika placeholder terpecah antar-run (fitur XML Word), ganti secara utuh di level paragraf
-            if key in paragraph.text:
-                paragraph.text = paragraph.text.replace(key, val)
-
 if st.button("Buat Dokumen Word"):
-    # 1. Validasi Semua Isian Wajib Diisi
     if jenis == "-- Silakan Pilih Kegiatan Monev --":
         st.warning("⚠️ Silakan pilih Kegiatan Monev terlebih dahulu!")
     elif nama == "-- Silakan Pilih Nama --":
@@ -97,33 +83,54 @@ if st.button("Buat Dokumen Word"):
         try:
             doc = Document(template_path)
 
-            # Dictionary Pemetaan Placeholder
-            replacements = {
-                "{{no_spt}}": no_spt,
-                "{{tgl_spt}}": tgl_spt,
-                "{{tujuan}}": tujuan,
-                "{{nama}}": nama,
-                "{{nip}}": NIP,
-                "{{waktu}}": waktu,
-                "{{wilayah}}": wilayah,
-                "{{tamu}}": tamu,
-                "{{arahan}}": arahan,
-                "{{masalah}}": masalah,
-                "{{saran}}": saran,
-                "{{lain}}": lain,
-                "{{tgl}}": tgl,
-            }
+            # Fungsi pembantu untuk mengganti teks placeholder
+            def ganti_placeholder(teks_sumber):
+                if "{{no_spt}}" in teks_sumber:
+                    teks_sumber = teks_sumber.replace("{{no_spt}}", no_spt)
+                if "{{tgl_spt}}" in teks_sumber:
+                    teks_sumber = teks_sumber.replace("{{tgl_spt}}", tgl_spt)
+                if "{{tujuan}}" in teks_sumber:
+                    teks_sumber = teks_sumber.replace("{{tujuan}}", tujuan)
+                return teks_sumber
 
-            # Replace pada paragraf biasa
-            for p in doc.paragraphs:
-                replace_text_in_paragraph(p, replacements)
-
-            # Replace pada tabel
+            #Ganti placeholder di tabel
             for table in doc.tables:
                 for row in table.rows:
                     for cell in row.cells:
-                        for p in cell.paragraphs:
-                            replace_text_in_paragraph(p, replacements)
+                        for paragraph in cell.paragraphs:
+                            for run in paragraph.runs:
+                                if "{{tujuan}}" in run.text:
+                                    run.text = run.text.replace("{{tujuan}}", tujuan)
+                                if "{{nama}}" in run.text:
+                                    run.text = run.text.replace("{{nama}}", nama)
+                                if "{{no_spt}}" in run.text:
+                                    run.text = run.text.replace("{{no_spt}}", no_spt)
+                                if "{{tgl_spt}}" in run.text:
+                                    run.text = run.text.replace("{{tgl_spt}}", tgl_spt)
+                                if "{{waktu}}" in run.text:
+                                    run.text = run.text.replace("{{waktu}}", waktu)
+                                if "{{wilayah}}" in run.text:
+                                    run.text = run.text.replace("{{wilayah}}", wilayah)
+                                if "{{tamu}}" in run.text:
+                                    run.text = run.text.replace("{{tamu}}", tamu)
+                                if "{{arahan}}" in run.text:
+                                    run.text = run.text.replace("{{arahan}}", arahan)
+                                if "{{masalah}}" in run.text:
+                                    run.text = run.text.replace("{{masalah}}", masalah)
+                                if "{{saran}}" in run.text:
+                                    run.text = run.text.replace("{{saran}}", saran)
+                                if "{{lain}}" in run.text:
+                                    run.text = run.text.replace("{{lain}}", lain)
+                                    
+            # Ganti placeholder di paragraf
+            for p in doc.paragraphs:
+                for run in p.runs:
+                    if "{{tgl}}" in run.text:
+                        run.text = run.text.replace("{{tgl}}", tgl)
+                    if "{{nama}}" in run.text:
+                        run.text = run.text.replace("{{nama}}", nama)
+                    if "{{nip}}" in run.text:
+                        run.text = run.text.replace("{{nip}}", NIP)
 
             output_path = f"LaporanJalDis_{nama.replace(' ', '_')}.docx"
             doc.save(output_path)
@@ -136,8 +143,8 @@ if st.button("Buat Dokumen Word"):
                     file_name=output_path,
                     mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 )
-            st.success("✅ Dokumen berhasil diproses dan siap diunduh!")
-
+            st.success("Dokumen berhasil diproses!")
+            
             # Hapus file temporary di server setelah selesai
             os.remove(output_path)
 
