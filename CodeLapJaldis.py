@@ -42,7 +42,6 @@ if nama != "-- Silakan Pilih Nama --":
 
 # Tampilkan kolom NIP (Disabled/ReadOnly agar tidak bisa diubah manual)
 st.text_input("NIP (Terisi Otomatis):", NIP, disabled=True)
-st.text_input("DASAR (Terisi Otomatis):", tujuan, disabled=True)
 
 # Form Input Web
 waktu = st.text_input("WAKTU PELAKSANAAN")
@@ -64,6 +63,16 @@ if st.button("Buat Dokumen Word"):
     else:
         try:
             doc = Document(template_path)
+
+            # Fungsi pembantu untuk mengganti teks placeholder
+            def ganti_placeholder(teks_sumber):
+                if "{{no_spt}}" in teks_sumber:
+                    teks_sumber = teks_sumber.replace("{{no_spt}}", no_spt)
+                if "{{tgl_spt}}" in teks_sumber:
+                    teks_sumber = teks_sumber.replace("{{tgl_spt}}", tgl_spt)
+                if "{{tujuan}}" in teks_sumber:
+                    teks_sumber = teks_sumber.replace("{{tujuan}}", tujuan)
+                return teks_sumber
 
             #Ganti placeholder di tabel
             for table in doc.tables:
