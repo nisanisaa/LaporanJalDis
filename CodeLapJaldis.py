@@ -47,7 +47,7 @@ st.text_input("NIP (Terisi Otomatis):", NIP, disabled=True)
 # Form Input Web
 waktu = st.text_input("WAKTU PELAKSANAAN")
 wilayah = st.text_input("DAERAH TUJUAN/PERTEMUAN")
-tamu = st.text_area("HADIR DALAM PERTEMUAN (Pisahkan dengan koma jika lebih dari satu)")
+tamu = st.text_input("HADIR DALAM PERTEMUAN (Pisahkan dengan koma jika lebih dari satu)")
 arahan = st.text_input("PETUNJUK/ARAHAN YANG DIBERIKAN")
 masalah = st.text_input("MASALAH/TEMUAN")
 saran = st.text_input("SARAN/TINDAKAN")
