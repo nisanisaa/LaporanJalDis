@@ -47,7 +47,7 @@ st.text_input("NIP (Terisi Otomatis):", NIP, disabled=True)
 # Form Input Web
 waktu = st.text_input("WAKTU PELAKSANAAN")
 wilayah = st.text_input("DAERAH TUJUAN/PERTEMUAN")
-tamu = st.text_input("HADIR DALAM PERTEMUAN")
+tamu = st.text_area("HADIR DALAM PERTEMUAN (Pisahkan dengan koma jika lebih dari satu)")
 arahan = st.text_input("PETUNJUK/ARAHAN YANG DIBERIKAN")
 masalah = st.text_input("MASALAH/TEMUAN")
 saran = st.text_input("SARAN/TINDAKAN")
@@ -64,8 +64,19 @@ def replace_text_in_paragraph(paragraph, replacements):
             # Coba ganti langsung per run jika tidak terpisah
             for run in paragraph.runs:
                 if key in run.text:
+                    # Khusus untuk teks multi-baris (seperti tamu), gunakan .add_break() agar rapi di Word
+                    if key == "{{tamu}}" and "\n" in val:
+                        run.text = run.text.replace(key, "") # Bersihkan placeholder dulu
+                        items = val.split("\n")
+                        for idx, item in enumerate(items, 1):
+                            p = paragraph
+                            if idx > 1:
+                                p = paragraph.insert_paragraph_before() # Atau tambahkan baris baru
+                            # Atau cara aman dengan string replacement biasa yang mendukung \n di docx:
+                    
                     run.text = run.text.replace(key, val)
-            # Jika placeholder terpecah antar-run (fitur XML Word), ganti secara utuh di level paragraf
+            
+            # Jika placeholder terpecah antar-run, ganti secara utuh di level paragraf
             if key in paragraph.text:
                 paragraph.text = paragraph.text.replace(key, val)
 
