@@ -33,9 +33,9 @@ tgl_spt = ""
 NIP = ""
 if jenis != "-- Silakan Pilih Kegiatan Monev --":
     # Cari no, tgl, dan tujuan berdasarkan jenis monev yang dipilih
-    tujuan = DATABASE_MONEV[tujuan]["tujuan"]
-    no_spt = DATABASE_MONEV[no_spt]["no_spt"]
-    tgl_spt = DATABASE_MONEV[tgl_spt]["tgl_spt"]
+    tujuan = DATABASE_MONEV[jenis]["tujuan"]
+    no_spt = DATABASE_MONEV[jenis]["no_spt"]
+    tgl_spt = DATABASE_MONEV[jenis]["tgl_spt"]
 if nama != "-- Silakan Pilih Nama --":
     # Cari NIP berdasarkan nama yang dipilih
     NIP = DATABASE_PETUGAS[nama]
