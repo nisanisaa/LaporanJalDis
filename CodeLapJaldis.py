@@ -1,5 +1,5 @@
 import streamlit as st
-from docx import Document
+import docx as Document
 import os
 
 st.title("Form Laporan Perjalanan Dinas")
