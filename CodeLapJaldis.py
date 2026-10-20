@@ -21,6 +21,17 @@ if st.button("Buat Dokumen Word"):
         try:
             doc = Document(template_path)
 
+            #Ganti placeholder di tabel
+            for table in doc.tables:
+                for row in table.rows:
+                    for cell in row.cells:
+                        for paragraph in cell.paragraphs:
+                            for run in paragraph.runs:
+                                if "{{nama}}" in run.text:
+                                    run.text = run.text.replace("{{nama}}", nama)
+                                if "{{nip}}" in run.text:
+                                    run.text = run.text.replace("{{nip}}", NIP)
+                                    
             # Ganti placeholder di paragraf
             for p in doc.paragraphs:
                 for run in p.runs:
