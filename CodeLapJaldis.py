@@ -22,9 +22,6 @@ if nama_terpilih != "-- Silakan Pilih Nama --":
     # Cari perusahaan berdasarkan nama yang dipilih
     nip_otomatis = DATABASE_PETUGAS[nama_terpilih]
 
-# Tampilkan kolom perusahaan (Disabled/ReadOnly agar tidak bisa diubah manual)
-st.text_input("NIP (Terisi Otomatis):", value=nip_otomatis, disabled=True)
-
 # File template harus diletakkan di folder yang sama di server
 template_path = "Laporan Perjalanan Dinas.docx"
 
