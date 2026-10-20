@@ -13,14 +13,14 @@ DATABASE_PETUGAS = {
 
 # 2. Form Input Pilihan Nama (Dropdown)
 # Kita ambil daftar nama dari database sebagai pilihan
-daftar_nama = list(DATABASE_PETUGAS.keys())
-nama_terpilih = st.selectbox("Pilih Nama Lengkap:", ["-- Silakan Pilih Nama --"] + daftar_nama)
+nama = list(DATABASE_PETUGAS.keys())
+nama_terpilih = st.selectbox("Pilih Nama Lengkap:", ["-- Silakan Pilih Nama --"] + nama)
 
 # 3. Logika Otomatis Mengisi Perusahaan
 perusahaan_otomatis = ""
 if nama_terpilih != "-- Silakan Pilih Nama --":
-    # Cari perusahaan berdasarkan nama yang dipilih
-    nip_otomatis = DATABASE_PETUGAS[nama_terpilih]
+    # Cari NIP berdasarkan nama yang dipilih
+    NIP = DATABASE_PETUGAS[nama_terpilih]
 
 # File template harus diletakkan di folder yang sama di server
 template_path = "Laporan Perjalanan Dinas.docx"
