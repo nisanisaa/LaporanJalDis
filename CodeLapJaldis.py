@@ -18,9 +18,9 @@ nama = st.selectbox("Pilih Nama Lengkap:", ["-- Silakan Pilih Nama --"] + nama_p
 
 # 3. Logika Otomatis Mengisi Perusahaan
 perusahaan_otomatis = ""
-if nama_terpilih != "-- Silakan Pilih Nama --":
+if nama != "-- Silakan Pilih Nama --":
     # Cari NIP berdasarkan nama yang dipilih
-    NIP = DATABASE_PETUGAS[nama_terpilih]
+    NIP = DATABASE_PETUGAS[nama]
 
 # File template harus diletakkan di folder yang sama di server
 template_path = "Laporan Perjalanan Dinas.docx"
