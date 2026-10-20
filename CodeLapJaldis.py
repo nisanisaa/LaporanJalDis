@@ -5,16 +5,32 @@ import os
 st.title("Form Laporan Perjalanan Dinas")
 st.write("Silakan isi form di bawah ini untuk mengunduh dokumen Anda.")
 
-# Form Input Web
-nama = st.text_input("NAMA PETUGAS")
-NIP = st.text_input("NIP")
+# 1. DATABASE DATA PETUGAS
+DATABASE_PETUGAS = {
+    "FITROTUN NISA, S.Kom.": "20010105 202504 2 006",
+    "SULTHAN RAFI ANWAR, S.Tr.I.P.": "20010413 202510 1 001"
+}
+
+# 2. Form Input Pilihan Nama (Dropdown)
+# Kita ambil daftar nama dari database sebagai pilihan
+daftar_nama = list(DATABASE_PETUGAS.keys())
+nama_terpilih = st.selectbox("Pilih Nama Lengkap:", ["-- Silakan Pilih Nama --"] + daftar_nama)
+
+# 3. Logika Otomatis Mengisi Perusahaan
+perusahaan_otomatis = ""
+if nama_terpilih != "-- Silakan Pilih Nama --":
+    # Cari perusahaan berdasarkan nama yang dipilih
+    nip_otomatis = DATABASE_PETUGAS[nama_terpilih]
+
+# Tampilkan kolom perusahaan (Disabled/ReadOnly agar tidak bisa diubah manual)
+st.text_input("NIP (Terisi Otomatis):", value=nip_otomatis, disabled=True)
 
 # File template harus diletakkan di folder yang sama di server
 template_path = "Laporan Perjalanan Dinas.docx"
 
 if st.button("Buat Dokumen Word"):
-    if not nama or not NIP:
-        st.warning("Semua kolom form harus diisi!")
+    if nama_terpilih == "-- Silakan Pilih Nama --":
+        st.warning("Silakan pilih nama terlebih dahulu!")
     elif not os.path.exists(template_path):
         st.error("File 'Laporan Perjalanan Dinas.docx' tidak ditemukan di server.")
     else:
@@ -39,15 +55,6 @@ if st.button("Buat Dokumen Word"):
                         run.text = run.text.replace("{{nama}}", nama)
                     if "{{nip}}" in run.text:
                         run.text = run.text.replace("{{nip}}", NIP)
-
-            # Ganti placeholder di tabel
-            for table in doc.tables:
-                for row in table.rows:
-                    for cell in row.cells:
-                        if "{{nama}}" in cell.text:
-                            cell.text = cell.text.replace("{{nama}}", nama)
-                        if "{{nip}}" in cell.text:
-                            cell.text = cell.text.replace("{{nip}}", NIP)
 
             output_path = f"LaporanJalDis_{nama.replace(' ', '_')}.docx"
             doc.save(output_path)
