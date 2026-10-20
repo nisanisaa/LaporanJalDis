@@ -26,7 +26,7 @@ if nama != "-- Silakan Pilih Nama --":
 template_path = "Laporan Perjalanan Dinas.docx"
 
 if st.button("Buat Dokumen Word"):
-    if nama_terpilih == "-- Silakan Pilih Nama --":
+    if nama == "-- Silakan Pilih Nama --":
         st.warning("Silakan pilih nama terlebih dahulu!")
     elif not os.path.exists(template_path):
         st.error("File 'Laporan Perjalanan Dinas.docx' tidak ditemukan di server.")
