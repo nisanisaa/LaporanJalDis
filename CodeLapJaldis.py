@@ -1,5 +1,4 @@
 import streamlit as st
-pip install python-docx
 import docx as Document
 import os
 
