@@ -33,9 +33,9 @@ tgl_spt = ""
 NIP = ""
 if jenis != "-- Silakan Pilih Kegiatan Monev --":
     # Cari no, tgl, dan tujuan berdasarkan jenis monev yang dipilih
-    tujuan = DATABASE_MONEV[jenis]["tujuan"]
     no_spt = DATABASE_MONEV[jenis]["no_spt"]
     tgl_spt = DATABASE_MONEV[jenis]["tgl_spt"]
+    tujuan = DATABASE_MONEV[jenis]["tujuan"]
 if nama != "-- Silakan Pilih Nama --":
     # Cari NIP berdasarkan nama yang dipilih
     NIP = DATABASE_PETUGAS[nama]
@@ -56,7 +56,9 @@ tindakan = st.text_input("LAIN-LAIN")
 template_path = "Laporan Perjalanan Dinas.docx"
 
 if st.button("Buat Dokumen Word"):
-    if nama == "-- Silakan Pilih Nama --":
+    if jenis == "-- Silakan Pilih Kegiatan Monev --":
+        st.warning("Silakan pilih kegiatan monev terlebih dahulu!")
+    elif nama == "-- Silakan Pilih Nama --":
         st.warning("Silakan pilih nama terlebih dahulu!")
     elif not os.path.exists(template_path):
         st.error("File 'Laporan Perjalanan Dinas.docx' tidak ditemukan di server.")
