@@ -42,6 +42,7 @@ if nama != "-- Silakan Pilih Nama --":
 
 # Tampilkan kolom NIP (Disabled/ReadOnly agar tidak bisa diubah manual)
 st.text_input("NIP (Terisi Otomatis):", NIP, disabled=True)
+st.text_input("DASAR (Terisi Otomatis):", tujuan, disabled=True)
 
 # Form Input Web
 waktu = st.text_input("WAKTU PELAKSANAAN")
