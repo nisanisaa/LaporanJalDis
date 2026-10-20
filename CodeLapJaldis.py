@@ -13,8 +13,8 @@ DATABASE_PETUGAS = {
 
 # 2. Form Input Pilihan Nama (Dropdown)
 # Kita ambil daftar nama dari database sebagai pilihan
-nama = list(DATABASE_PETUGAS.keys())
-nama_terpilih = st.selectbox("Pilih Nama Lengkap:", ["-- Silakan Pilih Nama --"] + nama)
+nama_petugas = list(DATABASE_PETUGAS.keys())
+nama = st.selectbox("Pilih Nama Lengkap:", ["-- Silakan Pilih Nama --"] + nama_petugas)
 
 # 3. Logika Otomatis Mengisi Perusahaan
 perusahaan_otomatis = ""
